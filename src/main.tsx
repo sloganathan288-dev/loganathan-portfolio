@@ -151,7 +151,7 @@ const projects: Project[] = [
     description:
       "A full-stack AI web application that converts speech to text and predicts likely next words, with multilingual voice input and real-time text interaction.",
     tech: ["Python", "Flask", "JavaScript", "RNN", "LSTM", "NLP"],
-    live: "https://rnn-voice-and-next-word-prediction.onrender.com/",
+    live: "https://rnn-voice-and-next-word-prediction-1.onrender.com/",
     repo: "https://github.com/sloganathan288-dev/RNN-voice-and-next-word-prediction",
     image: rnnVoicePredictor,
     details: [
