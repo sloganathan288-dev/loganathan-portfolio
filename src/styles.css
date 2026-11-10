@@ -190,3 +190,87 @@ html.light .portrait-status{background:rgba(255,255,255,.88);color:var(--text)}
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
  .reveal{opacity:1;transform:none;filter:none}
 }
+
+
+/* ── Editorial typography + full-page motion system ── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{
+  --font-display:"Space Grotesk", "Manrope", sans-serif;
+  --font-body:"Manrope", Inter, sans-serif;
+  --font-mono:"DM Mono", monospace;
+  --type-xs:clamp(.68rem,.62rem + .15vw,.76rem);
+  --type-sm:clamp(.78rem,.72rem + .18vw,.9rem);
+  --type-base:clamp(.92rem,.86rem + .22vw,1.04rem);
+  --type-lg:clamp(1.08rem,1rem + .4vw,1.3rem);
+  --type-xl:clamp(1.45rem,1.2rem + 1vw,2.1rem);
+}
+html{font-family:var(--font-body);font-optical-sizing:auto;text-rendering:optimizeLegibility}
+body{font-family:var(--font-body);font-size:var(--type-base);letter-spacing:-.012em;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,.brand,.btn,.small-btn,.nav-links button{font-family:var(--font-display)}
+h1,h2,h3,h4{font-weight:700;text-wrap:balance}
+p{ text-wrap:pretty }
+.brand{font-size:18px;letter-spacing:-.045em;font-weight:700}
+.nav-links button{font-size:12px;font-weight:600;letter-spacing:.015em}
+.hero-kicker,.eyebrow,.section-label,.project-meta,.timeline-date,.experience-period,.cert-label,.interest-title{font-family:var(--font-mono);letter-spacing:.075em}
+.hero-kicker{font-size:var(--type-xs);line-height:1.8}
+.eyebrow{font-size:var(--type-xs);font-weight:500}
+.hero h1{font-family:var(--font-display);font-size:clamp(3.2rem,6.4vw,5.65rem);line-height:.99;letter-spacing:-.075em;font-weight:700}
+.hero-text{font-size:clamp(1rem,1.12vw,1.13rem);line-height:1.85;letter-spacing:-.02em;max-width:610px}
+.section-head h2,.cta h2{font-family:var(--font-display);font-size:clamp(2.35rem,4.5vw,3.65rem);line-height:1.02;letter-spacing:-.065em;font-weight:700}
+.section-head>p:last-child,.about-text p,.cta p:not(.section-label){font-size:var(--type-base);line-height:1.9;letter-spacing:-.018em}
+.skill-card h3,.project-body h3,.experience-card h3,.timeline-content h3,.cert-card h3{font-family:var(--font-display);letter-spacing:-.035em;font-weight:700}
+.skill-card h3{font-size:1.08rem}
+.tags span,.project-tech span{font-family:var(--font-mono);font-size:var(--type-xs);letter-spacing:-.025em;padding:7px 9px}
+.project-meta{font-size:9px}
+.project-body h3{font-size:clamp(1.2rem,1.7vw,1.5rem);line-height:1.2}
+.project-body p,.experience-card>p:not(.experience-period),.timeline-content p,.modal-content>p{font-size:var(--type-sm);line-height:1.85;letter-spacing:-.012em}
+.btn{font-size:var(--type-sm);font-weight:700;letter-spacing:-.015em;padding:13px 18px}
+.small-btn{font-family:var(--font-mono);font-size:var(--type-xs);font-weight:500;letter-spacing:-.025em}
+.stat-card strong{font-family:var(--font-display);font-size:1.55rem;letter-spacing:-.055em}
+.stat-card span,.contact-card small,.footer-inner{font-size:var(--type-xs)}
+.contact-card strong{font-family:var(--font-display);font-size:var(--type-sm);letter-spacing:-.025em}
+.timeline-content h3{font-size:1.25rem}
+.modal-content h2{font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.35rem);letter-spacing:-.06em}
+.modal-content h4{font-family:var(--font-mono);font-size:var(--type-xs)}
+/* Fine detail: restrained glow, animated underline and tactile interactions */
+.nav-links button{position:relative}
+.nav-links button:after{content:"";position:absolute;left:11px;right:11px;bottom:4px;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.nav-links button:hover:after{transform:scaleX(1)}
+.section-head h2,.hero h1,.cta h2{ text-shadow:0 8px 38px rgba(101,214,255,.055) }
+.project-card,.skill-card,.experience-card,.cert-card,.contact-card,.stat-card,.github-banner,.cta-box{backdrop-filter:blur(16px);transition:transform .55s cubic-bezier(.2,.8,.2,1),border-color .4s ease,box-shadow .45s ease,background .4s ease}
+.project-card:hover,.experience-card:hover{transform:translateY(-9px) scale(1.008)}
+.skill-card:hover,.stat-card:hover,.contact-card:hover{transform:translateY(-7px) scale(1.018)}
+.project-card:before,.skill-card:before,.contact-card:before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 20%,rgba(101,214,255,.075),transparent 68%);opacity:0;transform:translateX(-35%);transition:opacity .45s ease,transform .65s ease}
+.project-card,.skill-card,.contact-card{position:relative;isolation:isolate}
+.project-card:hover:before,.skill-card:hover:before,.contact-card:hover:before{opacity:1;transform:translateX(20%)}
+.btn,.small-btn,.icon-btn,.menu-btn{transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease,border-color .3s ease,background .3s ease}
+.btn:active,.small-btn:active,.icon-btn:active,.menu-btn:active{transform:scale(.96)}
+.hero-actions .btn.primary{background-size:180% 100%;background-position:0 50%;transition:background-position .5s ease,transform .3s ease,box-shadow .3s ease}
+.hero-actions .btn.primary:hover{background-position:100% 50%;box-shadow:0 16px 42px rgba(101,214,255,.24)}
+/* Sections and all major content blocks reveal progressively as the page is explored. */
+.section.reveal{transition:opacity .9s ease,transform .9s cubic-bezier(.18,.72,.22,1),filter .9s ease}
+.section.reveal:not(.is-visible){transform:translateY(38px);filter:blur(7px)}
+.section.reveal.is-visible{transform:translateY(0);filter:blur(0)}
+.section:not(.hero) .section-head.reveal{transition-delay:.08s}
+.project-card.reveal,.skill-card.reveal,.experience-card.reveal,.timeline-item.reveal,.contact-card.reveal{transition-duration:.8s}
+.project-card.reveal:nth-child(3n+2),.skill-card.reveal:nth-child(3n+2),.contact-card.reveal:nth-child(3n+2){transition-delay:.12s}
+.project-card.reveal:nth-child(3n),.skill-card.reveal:nth-child(3n),.contact-card.reveal:nth-child(3n){transition-delay:.2s}
+.footer{position:relative;overflow:hidden}
+.footer:before{content:"";position:absolute;left:-20%;right:-20%;top:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent);background-size:200% 100%;animation:footer-line 8s linear infinite}
+@keyframes footer-line{to{background-position:200% 0}}
+/* Avoid hover lift on touch screens and keep typography comfortable on narrow devices. */
+@media(max-width:760px){
+ .hero h1{font-size:clamp(2.85rem,10vw,4.1rem);letter-spacing:-.07em}
+ .section-head h2,.cta h2{font-size:clamp(2.15rem,8vw,3rem)}
+ .hero-text{font-size:1rem;line-height:1.8}
+ .project-body{padding:20px}
+ .project-body h3{font-size:1.3rem}
+ .nav-links button{font-size:14px}
+}
+@media(hover:none){
+ .project-card:hover,.skill-card:hover,.experience-card:hover,.contact-card:hover,.stat-card:hover{transform:none}
+}
+@media(prefers-reduced-motion:reduce){
+ .footer:before{animation:none}
+ .project-card:before,.skill-card:before,.contact-card:before{display:none}
+}
