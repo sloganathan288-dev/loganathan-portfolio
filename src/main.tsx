@@ -117,7 +117,7 @@ const projects: Project[] = [
     category: "Mobile / IoT",
     description:
       "A Flutter application integrated with ESP32 and IoT sensors for scheduled medicine reminders and patient/caregiver notifications.",
-    tech: ["Flutter", "Dart", "ESP32", "IoT", "SMS API"],
+    tech: ["Flutter", "ESP32", "IoT", "SMS API"],
     image: "",
     details: [
       "Medicine scheduling and reminders",
@@ -162,15 +162,94 @@ const projects: Project[] = [
       "RNN/LSTM-based next-word prediction workflow",
       "Interactive frontend with Flask backend"
     ]
+  },
+  {
+    id: "academic-assessment",
+    title: "Academic Assessment & Performance Analysis",
+    category: "Full Stack / Education",
+    description: "A Flask-based academic assessment platform for teachers to manage exam marks, rank students and review class performance through clear statistical summaries.",
+    tech: ["Python", "Flask", "HTML", "CSS", "JavaScript", "JSON"],
+    repo: "https://github.com/sloganathan288-dev/academic-performance-analysis-system",
+    image: "",
+    details: [
+      "Teacher registration and login workflow",
+      "Dynamic exam and student mark entry",
+      "Automatic highest, lowest and average calculations",
+      "Ranked student lists with performance categories",
+      "Absent-student handling and record filtering"
+    ]
+  },
+  {
+    id: "fake-news",
+    title: "Fake News Detection & Verification",
+    category: "AI / Research",
+    description: "A Streamlit-based news verification prototype that checks submitted news content against trusted news sources using an AI-assisted verification workflow.",
+    tech: ["Python", "Streamlit", "AI", "News Verification"],
+    repo: "https://github.com/sloganathan288-dev/mindfull-ai",
+    image: "",
+    details: [
+      "News article input and verification interface",
+      "AI-assisted analysis through a Python model module",
+      "Trusted-news-source checking workflow",
+      "Interactive result and feedback states"
+    ]
+  },
+  {
+    id: "logu-games",
+    title: "LOGU GAMES",
+    category: "Game Development",
+    description: "A browser gaming platform featuring a collection of interactive arcade, racing, puzzle, brain and action games with responsive controls.",
+    tech: ["React", "TypeScript", "CSS", "Vite"],
+    repo: "https://github.com/sloganathan288-dev/LOGU-GAMES",
+    image: "",
+    featured: true,
+    details: [
+      "Multiple playable game experiences in one platform",
+      "Arcade runner, racing, brain and zombie action games",
+      "Memory, snake, aim trainer and brick-breaker games",
+      "Reusable game components and category navigation",
+      "Keyboard, mouse and touch control support"
+    ]
+  },
+  {
+    id: "mistry-worker",
+    title: "Mistry Worker & Salary Manager",
+    category: "Full Stack / Business",
+    description: "A React-based worker management application with monthly salary calculations, worker records, salary history and reporting workflows, integrated with Supabase authentication and data services.",
+    tech: ["React", "JavaScript", "Supabase", "SQL", "Vite"],
+    repo: "https://github.com/sloganathan288-dev/mistry-worker-management",
+    image: "",
+    details: [
+      "Google sign-in through Supabase Auth",
+      "Worker profile and record management",
+      "Monthly salary and overtime calculations",
+      "Salary history, advances and payment status",
+      "Reports and image/export utilities"
+    ]
+  },
+  {
+    id: "disaster-monitoring",
+    title: "AI-Powered Disaster Monitoring",
+    category: "AI / Research",
+    description: "An ongoing final-year academic project exploring disaster monitoring and situational awareness using satellite and drone imagery.",
+    tech: ["Python", "Artificial Intelligence", "Computer Vision", "Satellite Imagery", "Drone Imagery"],
+    image: "",
+    details: [
+      "Academic project currently in development",
+      "Explores satellite and drone imagery as input sources",
+      "Focuses on AI-assisted disaster observation and monitoring",
+      "Project implementation and evaluation are ongoing"
+    ]
   }
 ];
 
 const skills = [
   { icon: Code2, title: "Programming", items: ["Java", "Python", "SQL", "JavaScript"] },
-  { icon: Smartphone, title: "Software & Full-Stack", items: ["Java Full Stack", "Frontend", "Backend", "REST APIs"] },
+  { icon: Smartphone, title: "Software & Full-Stack", items: ["React", "Frontend", "Backend", "REST APIs", "API Integration"] },
   { icon: BrainCircuit, title: "AI & Machine Learning", items: ["Machine Learning", "Deep Learning", "Computer Vision"] },
   { icon: Database, title: "Data Analytics", items: ["Pandas", "NumPy", "Matplotlib", "SQL"] },
-  { icon: Workflow, title: "Web Development", items: ["HTML", "CSS", "JavaScript", "Responsive Web Design"] },
+  { icon: Workflow, title: "Web Development", items: ["HTML", "CSS", "JavaScript", "React", "Responsive Web Design"] },
+  { icon: Workflow, title: "Automation & Backend", items: ["n8n", "Supabase", "MySQL", "MongoDB", "SQL", "WhatsApp API"] },
   { icon: Cpu, title: "IoT", items: ["ESP32", "Arduino", "IoT Sensors"] },
   { icon: Terminal, title: "Tools", items: ["Git", "GitHub", "VS Code", "Prompt Engineering"] }
 ];
@@ -278,7 +357,7 @@ function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const categories = ["All", "AI / Web", "Web Development", "AI / IoT", "Mobile / IoT", "AI / NLP", "Computer Vision / Web"];
+  const categories = ["All", ...Array.from(new Set(projects.map((project) => project.category)))];
   const visibleProjects = useMemo(
     () => filter === "All" ? projects : projects.filter((p) => p.category === filter),
     [filter]
@@ -299,7 +378,7 @@ function App() {
           </button>
 
           <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-            {["about", "skills", "projects", "education", "certifications", "contact"].map((id) => (
+            {["about", "skills", "projects", "experience", "education", "certifications", "contact"].map((id) => (
               <button key={id} onClick={() => go(id)}>{id[0].toUpperCase() + id.slice(1)}</button>
             ))}
           </div>
@@ -376,7 +455,7 @@ function App() {
               <div className="about-cards">
                 <div className="stat-card"><GraduationCap/><strong>8.50</strong><span>CGPA</span></div>
                 <div className="stat-card"><BrainCircuit/><strong>AI / ML</strong><span>Focus area</span></div>
-                <div className="stat-card"><Code2/><strong>4+</strong><span>Featured projects</span></div>
+                <div className="stat-card"><Code2/><strong>10+</strong><span>Projects & prototypes</span></div>
                 <div className="stat-card"><MapPin/><strong>Salem</strong><span>Tamil Nadu, India</span></div>
               </div>
             </div>
@@ -452,6 +531,34 @@ function App() {
             <div className="github-banner">
               <div><Github size={24}/><div><strong>More projects on GitHub</strong><span>Explore additional work, experiments and practice repositories.</span></div></div>
               <a className="btn secondary" href={github} target="_blank" rel="noreferrer">Open GitHub <ArrowUpRight size={17}/></a>
+            </div>
+          </div>
+        </section>
+
+        <section id="experience" className="section section-alt">
+          <div className="container narrow">
+            <div className="section-head centered">
+              <p className="section-label">04 · Professional Experience</p>
+              <h2>Learning through <span>real-world work.</span></h2>
+              <p>Hands-on experience across full-stack development, AI automation and integration.</p>
+            </div>
+            <div className="experience-grid">
+              <article className="experience-card">
+                <div className="experience-topline"><span className="experience-icon"><BriefcaseBusiness size={20}/></span><span className="experience-mode">On-site · Salem</span></div>
+                <p className="experience-period">24 September – 24 November 2026</p>
+                <h3>Full-Stack Web Developer · AI Automation & Integration</h3>
+                <h4>Ethiroli Private Limited</h4>
+                <p>Working on full-stack web development and AI-powered automation integrations in an on-site company environment.</p>
+                <div className="project-tech"><span>React</span><span>Web Development</span><span>AI Automation</span><span>n8n</span><span>API Integration</span></div>
+              </article>
+              <article className="experience-card">
+                <div className="experience-topline"><span className="experience-icon"><Code2 size={20}/></span><span className="experience-mode">Remote · Work from home</span></div>
+                <p className="experience-period">September – November 2026</p>
+                <h3>Full-Stack Developer</h3>
+                <h4>Shanks Code</h4>
+                <p>Contributed to full-stack web development, building frontend experiences and integrating application functionality.</p>
+                <div className="project-tech"><span>React</span><span>JavaScript</span><span>Frontend Development</span><span>Full-Stack Development</span></div>
+              </article>
             </div>
           </div>
         </section>
