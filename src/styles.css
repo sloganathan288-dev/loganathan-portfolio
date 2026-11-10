@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root{
   --bg:#07111f; --bg2:#0b1728; --panel:rgba(15,30,49,.72); --panel-solid:#0e1c2e;
@@ -193,7 +194,6 @@ html.light .portrait-status{background:rgba(255,255,255,.88);color:var(--text)}
 
 
 /* ── Editorial typography + full-page motion system ── */
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 :root{
   --font-display:"Space Grotesk", "Manrope", sans-serif;
   --font-body:"Manrope", Inter, sans-serif;
