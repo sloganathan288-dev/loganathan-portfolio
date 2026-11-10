@@ -433,6 +433,79 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targets = document.querySelectorAll<HTMLElement>(
+      ".hero-copy > *, .hero-visual, .section-head, .about-text > *, .stat-card, .interest-strip > *, .skill-card, .project-card, .experience-card, .timeline-item, .cert-card, .cta-box, .contact-card, .github-banner, .skills-universe, .github-pulse, .terminal-window"
+    );
+    targets.forEach((el, index) => {
+      el.classList.add("motion-reveal");
+      const parent = el.parentElement;
+      const siblings = parent ? Array.from(parent.children).filter((node) => node.classList.contains("motion-reveal")) : [];
+      el.style.setProperty("--reveal-order", String(Math.max(0, siblings.indexOf(el))));
+      if (index < 3) el.classList.add("motion-ready");
+    });
+    if (reduce || !("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("motion-in"));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("motion-in");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.16, rootMargin: "0px 0px -7% 0px" });
+      targets.forEach((el) => observer.observe(el));
+      return () => observer.disconnect();
+    }
+  }, []);
+
+  useEffect(() => {
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || reduce) return;
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".project-card, .skill-card, .experience-card, .cert-card, .stat-card, .contact-card, .cta-box"));
+    const cleanups: (() => void)[] = [];
+    cards.forEach((card) => {
+      const move = (event: PointerEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width;
+        const y = (event.clientY - rect.top) / rect.height;
+        card.style.setProperty("--tilt-x", ((.5 - y) * 5).toFixed(2) + "deg");
+        card.style.setProperty("--tilt-y", ((x - .5) * 6).toFixed(2) + "deg");
+        card.style.setProperty("--shine-x", (x * 100).toFixed(1) + "%");
+        card.style.setProperty("--shine-y", (y * 100).toFixed(1) + "%");
+        card.classList.add("is-tilting");
+      };
+      const leave = () => { card.classList.remove("is-tilting"); card.style.removeProperty("--tilt-x"); card.style.removeProperty("--tilt-y"); };
+      card.addEventListener("pointermove", move);
+      card.addEventListener("pointerleave", leave);
+      cleanups.push(() => { card.removeEventListener("pointermove", move); card.removeEventListener("pointerleave", leave); });
+    });
+    return () => cleanups.forEach((cleanup) => cleanup());
+  }, [filter]);
+
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("main .section"));
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const vh = window.innerHeight || 1;
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+        section.style.setProperty("--scroll-progress", progress.toFixed(3));
+        section.style.setProperty("--scroll-shift", ((progress - .5) * -24).toFixed(1) + "px");
+      });
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setSelected(null);
