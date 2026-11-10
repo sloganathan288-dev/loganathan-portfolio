@@ -506,3 +506,144 @@ html.light .ambient-orb{opacity:.2}
   html.light{--line:rgba(18,48,82,.34);--muted:#3f536b}
   html.light .neural-bg{opacity:.9}
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGANATHAN — PREMIUM PORTFOLIO DESIGN SYSTEM
+   Three-colour rule: Midnight Navy · Porcelain · Electric Teal
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --brand-navy:#0b1728;
+  --brand-porcelain:#f7fafc;
+  --brand-teal:#00a6a6;
+  --brand-teal-bright:#25d0c7;
+  --bg:#081526;
+  --bg2:#0e2034;
+  --panel:rgba(17,37,58,.82);
+  --panel-solid:#102238;
+  --text:#f4f8fb;
+  --muted:#a8bacb;
+  --line:rgba(181,210,229,.19);
+  --accent:var(--brand-teal-bright);
+  --accent2:var(--brand-teal);
+  --shadow:0 24px 70px rgba(0,0,0,.28);
+  --motion-ease:cubic-bezier(.2,.75,.25,1);
+}
+html.light{
+  --bg:#f7fafc;
+  --bg2:#edf3f6;
+  --panel:rgba(255,255,255,.9);
+  --panel-solid:#fff;
+  --text:#102238;
+  --muted:#52677a;
+  --line:rgba(16,49,72,.17);
+  --accent:#008f91;
+  --accent2:#00a6a6;
+  --shadow:0 20px 58px rgba(17,49,72,.1);
+}
+body{background:var(--bg);color:var(--text)}
+.site{
+  background:
+    radial-gradient(ellipse 680px 420px at 82% 7%,rgba(0,166,166,.13),transparent 68%),
+    radial-gradient(ellipse 620px 480px at 5% 32%,rgba(0,166,166,.08),transparent 70%),
+    linear-gradient(180deg,#081526 0%,#0b1b2e 52%,#081526 100%);
+}
+html.light .site{
+  background:
+    radial-gradient(ellipse 700px 460px at 85% 3%,rgba(0,166,166,.10),transparent 70%),
+    radial-gradient(ellipse 680px 500px at 3% 40%,rgba(0,166,166,.065),transparent 72%),
+    linear-gradient(180deg,#fbfdfe 0%,#f1f6f8 54%,#fbfdfe 100%);
+}
+html.light .section-alt{
+  background:linear-gradient(135deg,rgba(0,166,166,.055),rgba(255,255,255,.72) 48%,rgba(0,166,166,.035));
+  border-block:1px solid rgba(16,75,91,.14);
+}
+html.light .nav-wrap{background:rgba(247,250,252,.9);border-color:var(--line)}
+html.light .nav-links button:hover,html.light .btn.secondary{background:rgba(0,166,166,.07)}
+html.light .eyebrow{color:#006f73;background:rgba(0,166,166,.08);border-color:rgba(0,143,145,.24)}
+html.light .hero:before{
+  background-image:linear-gradient(rgba(0,117,125,.075) 1px,transparent 1px),linear-gradient(90deg,rgba(0,117,125,.075) 1px,transparent 1px);
+  opacity:.9;
+}
+html.light main .section:not(.hero)::before{
+  background:radial-gradient(ellipse at 14% 28%,rgba(0,166,166,.075),transparent 55%),radial-gradient(ellipse at 88% 75%,rgba(0,166,166,.045),transparent 52%);
+  opacity:1;
+}
+html.light .neural-bg{opacity:1;mix-blend-mode:multiply}
+html.light .cursor-fx{opacity:.7;mix-blend-mode:multiply}
+html.light .cursor-aura{opacity:1;background:radial-gradient(300px circle at var(--pointer-x) var(--pointer-y),rgba(0,166,166,.12),transparent 72%)}
+html.light .stat-card,html.light .skill-card,html.light .project-card,html.light .experience-card,html.light .cert-card,html.light .contact-card,html.light .github-banner,html.light .skills-universe,html.light .github-pulse,html.light .interest-strip,html.light .cta-box{
+  background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(239,247,248,.92));
+  border-color:rgba(16,75,91,.17);
+  box-shadow:0 12px 34px rgba(16,65,80,.07),inset 0 1px 0 rgba(255,255,255,.95);
+}
+html.light .stat-card:hover,html.light .skill-card:hover,html.light .project-card:hover,html.light .experience-card:hover,html.light .contact-card:hover{
+  border-color:rgba(0,143,145,.42);
+  box-shadow:0 20px 48px rgba(0,105,112,.12);
+}
+html.light .tags span,html.light .project-tech span,html.light .interest-strip span:not(.interest-title){
+  color:#345363;background:rgba(0,166,166,.055);border-color:rgba(0,116,122,.16);
+}
+html.light .skill-icon,html.light .experience-icon,html.light .cert-icon{
+  color:#007f83;background:rgba(0,166,166,.09);border-color:rgba(0,143,145,.2);
+}
+html.light .filters button{background:rgba(255,255,255,.8);color:#52677a}
+html.light .filters button.active{background:rgba(0,166,166,.1);color:#007f83;border-color:rgba(0,143,145,.34)}
+html.light .universe-map line{stroke:rgba(0,127,132,.4)}
+html.light .universe-core{background:#fff;border-color:rgba(0,143,145,.5);color:#008f91;box-shadow:0 0 36px rgba(0,166,166,.16)}
+html.light .universe-node{background:#fff;color:#496271;border-color:rgba(16,75,91,.2)}
+html.light .universe-node.active,html.light .universe-node:hover{color:#007f83;border-color:#008f91;box-shadow:0 0 0 4px rgba(0,166,166,.08)}
+html.light .universe-detail{background:rgba(0,166,166,.07)}
+html.light .contribution-card{background:rgba(232,243,244,.9);border-color:rgba(16,75,91,.16)}
+html.light .project-media.no-image{background:radial-gradient(circle at 50% 35%,rgba(0,166,166,.18),transparent 46%),linear-gradient(135deg,#dceced,#f5f9fa)}
+html.light .project-media.no-image:before,html.light .project-media.no-image:after{border-color:rgba(0,127,132,.32)}
+html.light .project-media.no-image:after{border-style:dashed}
+html.light .project-media.no-image .media-placeholder{color:#345363}
+html.light .cta-box{background:radial-gradient(circle at 85% 25%,rgba(0,166,166,.13),transparent 36%),rgba(255,255,255,.94)}
+html.light .timeline:before{background:linear-gradient(180deg,rgba(0,143,145,.55),rgba(0,143,145,.16))}
+html.light .timeline-marker{background:#fff;border-color:rgba(0,143,145,.28)}
+html.light .footer{background:rgba(237,245,246,.7)}
+html.light .assistant-launch{background:linear-gradient(120deg,#0b2635,#006f73);color:#f7fafc;border-color:rgba(0,166,166,.5)}
+html.light .assistant-messages p{background:rgba(0,166,166,.09)}
+html.light .assistant-messages p.user{background:rgba(11,23,40,.09)}
+html.light .assistant-panel input{background:#f7fafc}
+html.light .btn.primary{background:linear-gradient(110deg,#008f91,#25c3ba);color:#f7fafc;box-shadow:0 12px 32px rgba(0,143,145,.2)}
+html.light .small-btn{background:rgba(0,166,166,.08);border-color:rgba(0,143,145,.28);color:#007f83}
+html.light .modal-backdrop{background:rgba(7,22,35,.58)}
+html.light .portrait-status{background:rgba(255,255,255,.94);color:#173447;border-color:rgba(16,75,91,.18)}
+html.light .float-card{background:rgba(255,255,255,.96);color:#173447;border-color:rgba(16,75,91,.2)}
+html.light .orbit-square,html.light .orbit-ring{border-color:rgba(0,143,145,.34)}
+html.light .orbit-square-two,html.light .orbit-ring-two{border-color:rgba(0,143,145,.22)}
+html.light .orbit-node{background:var(--brand-teal);box-shadow:0 0 0 5px rgba(0,166,166,.12),0 0 18px rgba(0,166,166,.5)}
+html.light .visual-glow{background:radial-gradient(circle,rgba(0,166,166,.22),transparent 68%)}
+html.light .section-head h2 span,html.light .hero-title .rotating-role,html.light .cta h2 span{
+  background:linear-gradient(100deg,#006f73,#00a6a6 55%,#006f73);
+  background-clip:text;-webkit-background-clip:text;color:transparent;
+}
+.hero h1 span,.section-head h2 span,.cta h2 span,.section-head h2 span,.hero-title .rotating-role{
+  background:linear-gradient(100deg,var(--accent),var(--brand-teal-bright),var(--accent));
+  background-clip:text;-webkit-background-clip:text;color:transparent;
+}
+.btn.primary{background:linear-gradient(110deg,#008f91,#25c3ba);color:#f7fafc;border-color:transparent}
+.small-btn{border-color:rgba(0,166,166,.34);background:rgba(0,166,166,.09);color:var(--accent)}
+.section-label,.text-link,.project-meta span:first-child,.cert-label,.timeline-date{color:var(--accent)}
+.skill-icon,.experience-icon{color:var(--accent)}
+.project-card.featured{border-color:rgba(0,166,166,.3)}
+.project-card:before,.skill-card:before,.contact-card:before,.project-card:after,.skill-card:after,.experience-card:after,.contact-card:after{
+  background:radial-gradient(circle at var(--shine-x,50%) var(--shine-y,50%),rgba(0,166,166,.12),transparent 48%);
+}
+.orbit-square,.orbit-ring{border-color:rgba(37,208,199,.3)}
+.orbit-square-two,.orbit-ring-two{border-color:rgba(37,208,199,.2)}
+.orbit-node{background:var(--brand-teal-bright);box-shadow:0 0 0 5px rgba(37,208,199,.12),0 0 20px rgba(37,208,199,.7)}
+.portrait-status{background:rgba(8,21,38,.84);color:#f4f8fb}
+.float-card{background:rgba(9,28,44,.86);color:#f4f8fb;border-color:rgba(37,208,199,.2)}
+.skills-universe,.github-pulse{border-color:rgba(37,208,199,.2)}
+.universe-map line{stroke:rgba(37,208,199,.32)}
+.universe-node.active,.universe-node:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 22px rgba(0,166,166,.16)}
+.universe-core{border-color:var(--accent);color:var(--accent);box-shadow:0 0 36px rgba(0,166,166,.18)}
+.experience-card:before{background:linear-gradient(180deg,var(--accent),var(--brand-teal-bright))}
+.footer:before{background:linear-gradient(90deg,transparent,var(--accent),var(--brand-teal-bright),transparent)}
+.section-head h2,.hero h1,.cta h2{text-shadow:none}
+@media(prefers-reduced-motion:reduce){
+  .hero:before,.ambient-orb,.orbit-square-one,.orbit-square-two,.orbit-ring-one,.orbit-ring-two{animation:none!important}
+}
