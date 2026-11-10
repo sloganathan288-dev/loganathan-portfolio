@@ -394,3 +394,115 @@ main .section:not(.hero)::before{content:"";position:absolute;inset:0;z-index:-1
 .intro-corner-left{left:clamp(18px,4vw,52px)}.intro-corner-right{right:clamp(18px,4vw,52px)}
 @media(max-width:560px){.intro-monogram{width:64px;height:64px;margin-bottom:28px}.intro-overline{font-size:8px;letter-spacing:.14em}.intro-name{font-size:clamp(2.45rem,11vw,4rem)}.intro-role{max-width:260px;line-height:1.9;font-size:8px;margin:17px 0 34px}.intro-corner{bottom:18px;font-size:7px}.intro-orbit{width:95vw}.intro-orbit-b{width:120vw}}
 @media(prefers-reduced-motion:reduce){.intro-grid,.intro-orbit,.intro-monogram,.intro-monogram i{animation:none!important}.intro-name span{opacity:1;transform:none;filter:none;animation:none}}
+
+
+/* ━━━ Light theme refinement: visible atmosphere, crisp surfaces and depth ━━━ */
+html.light{
+  color-scheme:light;
+  --bg:#f7f9ff;
+  --bg2:#edf3ff;
+  --panel:rgba(255,255,255,.88);
+  --panel-solid:#ffffff;
+  --text:#14243a;
+  --muted:#53677f;
+  --line:rgba(31,67,112,.19);
+  --accent:#087eae;
+  --accent2:#6555d9;
+  --shadow:0 22px 65px rgba(36,72,120,.13);
+}
+html.light body{background:var(--bg);color:var(--text)}
+html.light .site{
+  background:
+    radial-gradient(ellipse 780px 520px at 8% 4%,rgba(27,161,218,.15),transparent 68%),
+    radial-gradient(ellipse 720px 520px at 92% 18%,rgba(117,96,230,.14),transparent 66%),
+    radial-gradient(ellipse 800px 560px at 48% 72%,rgba(30,153,190,.075),transparent 70%),
+    linear-gradient(180deg,#fbfdff 0%,#f3f7ff 52%,#f8faff 100%);
+}
+html.light .hero:before{
+  opacity:.95;
+  background-image:
+    linear-gradient(rgba(43,112,177,.105) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(43,112,177,.105) 1px,transparent 1px);
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.95),transparent 94%);
+}
+html.light .section-alt{
+  background:
+    radial-gradient(ellipse at 12% 15%,rgba(39,151,205,.09),transparent 48%),
+    radial-gradient(ellipse at 90% 85%,rgba(115,94,220,.075),transparent 46%),
+    linear-gradient(145deg,rgba(231,241,255,.78),rgba(248,250,255,.86));
+  border-block:1px solid rgba(36,91,145,.16);
+}
+html.light main .section:not(.hero)::before{
+  opacity:.8;
+  background:
+    radial-gradient(ellipse at 12% 30%,rgba(20,145,200,.105),transparent 52%),
+    radial-gradient(ellipse at 88% 72%,rgba(111,91,220,.09),transparent 48%);
+}
+html.light .neural-bg{opacity:1;mix-blend-mode:multiply}
+html.light .cursor-fx{opacity:.72;mix-blend-mode:multiply}
+html.light .cursor-aura{
+  opacity:1;
+  background:radial-gradient(300px circle at var(--pointer-x) var(--pointer-y),rgba(15,142,198,.13),rgba(111,91,220,.07) 40%,transparent 74%);
+}
+html.light .nav-wrap{background:rgba(249,252,255,.86);border-bottom-color:rgba(31,67,112,.16);box-shadow:0 5px 24px rgba(45,80,130,.055)}
+html.light .nav-links button:hover,html.light .btn.secondary{background:rgba(31,112,170,.065)}
+html.light .icon-btn,html.light .menu-btn{background:rgba(255,255,255,.72);box-shadow:0 3px 12px rgba(35,73,120,.06)}
+html.light .brand-mark{color:#fff;box-shadow:0 6px 18px rgba(69,106,204,.2)}
+html.light .eyebrow{color:#176b91;background:rgba(27,153,202,.09);border-color:rgba(27,137,190,.25)}
+html.light .visual-glow{background:radial-gradient(circle,rgba(32,167,216,.27),rgba(117,96,230,.13) 44%,transparent 70%)}
+html.light .portrait-orbit-system{filter:drop-shadow(0 18px 42px rgba(51,115,180,.19))}
+html.light .orbit-square{border-color:rgba(14,129,177,.52);box-shadow:0 0 24px rgba(30,145,190,.12),inset 0 0 22px rgba(30,145,190,.07)}
+html.light .orbit-square-two{border-color:rgba(105,87,209,.48)}
+html.light .orbit-ring{border-color:rgba(21,125,177,.28)}
+html.light .orbit-ring-two{border-color:rgba(105,87,209,.3)}
+html.light .orbit-node{box-shadow:0 0 0 5px rgba(14,129,177,.14),0 0 20px rgba(14,129,177,.65)}
+html.light .float-card{background:rgba(255,255,255,.94);color:#18324c;border-color:rgba(31,91,145,.2);box-shadow:0 14px 34px rgba(36,72,120,.15)}
+html.light .portrait-status{background:rgba(255,255,255,.94);border-color:rgba(31,91,145,.2);color:#18324c}
+html.light .stat-card,html.light .skill-card,html.light .project-card,html.light .experience-card,html.light .cert-card,html.light .contact-card,html.light .github-banner,html.light .skills-universe,html.light .github-pulse,html.light .interest-strip,html.light .cta-box{
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(241,247,255,.9));
+  border-color:rgba(36,91,145,.19);
+  box-shadow:0 12px 35px rgba(39,79,128,.075),inset 0 1px 0 rgba(255,255,255,.95);
+}
+html.light .stat-card:hover,html.light .skill-card:hover,html.light .project-card:hover,html.light .experience-card:hover,html.light .contact-card:hover{
+  border-color:rgba(10,130,181,.42);
+  box-shadow:0 20px 48px rgba(40,93,150,.14),0 0 0 1px rgba(16,137,185,.05);
+}
+html.light .tags span,html.light .project-tech span,html.light .interest-strip span:not(.interest-title){
+  color:#49617b;background:rgba(224,237,250,.72);border-color:rgba(41,91,139,.16);
+}
+html.light .skill-icon,html.light .experience-icon{background:rgba(21,145,192,.1);border-color:rgba(21,145,192,.2)}
+html.light .filters button{background:rgba(255,255,255,.75);color:#52677f}
+html.light .filters button.active{background:rgba(13,135,184,.1);color:#087eae;border-color:rgba(13,135,184,.36)}
+html.light .universe-map line{stroke:rgba(18,126,177,.4);stroke-width:1.5}
+html.light .universe-core{background:linear-gradient(145deg,#fff,#eaf5ff);box-shadow:0 0 42px rgba(24,145,195,.2);border-color:rgba(8,126,174,.55)}
+html.light .universe-node{background:rgba(255,255,255,.96);color:#45617d;border-color:rgba(31,91,145,.22);box-shadow:0 7px 18px rgba(36,72,120,.08)}
+html.light .universe-node.active,html.light .universe-node:hover{color:#087eae;border-color:#087eae;box-shadow:0 0 0 4px rgba(8,126,174,.09),0 8px 24px rgba(8,126,174,.14)}
+html.light .universe-detail{background:rgba(14,137,184,.075)}
+html.light .contribution-card{background:rgba(231,241,252,.82);border-color:rgba(36,91,145,.2)}
+html.light .contribution-card img{filter:drop-shadow(0 0 10px rgba(12,126,174,.16))}
+html.light .project-media.no-image{background:radial-gradient(circle at 50% 35%,rgba(22,153,201,.2),transparent 44%),linear-gradient(135deg,#dceeff,#e9e7ff)}
+html.light .project-media.no-image:before{border-color:rgba(8,126,174,.32)}
+html.light .project-media.no-image:after{border-color:rgba(101,85,217,.36)}
+html.light .project-media.no-image .media-placeholder{color:#31516f}
+html.light .cta-box{background:radial-gradient(circle at 85% 25%,rgba(19,155,207,.17),transparent 34%),radial-gradient(circle at 15% 80%,rgba(113,91,220,.13),transparent 38%),rgba(255,255,255,.92)}
+html.light .timeline:before{background:linear-gradient(180deg,rgba(8,126,174,.5),rgba(101,85,217,.24))}
+html.light .timeline-marker{background:#fff;border-color:rgba(20,116,166,.25)}
+html.light .footer{background:rgba(235,243,253,.62)}
+html.light .assistant-panel{border-color:rgba(31,91,145,.22);box-shadow:0 24px 70px rgba(35,72,120,.2)}
+html.light .assistant-launch{background:linear-gradient(120deg,#e8f6ff,#eeedff);color:#18324c;border-color:rgba(24,128,180,.32);box-shadow:0 12px 35px rgba(35,90,145,.17)}
+html.light .assistant-messages p{background:rgba(15,137,187,.09)}
+html.light .assistant-messages p.user{background:rgba(105,85,217,.12)}
+html.light .assistant-panel input{background:#f6f9ff}
+html.light .btn.primary{background:linear-gradient(110deg,#25b5d8,#8d8af2);color:#071b2d;box-shadow:0 12px 32px rgba(27,145,195,.2)}
+html.light .small-btn{background:rgba(15,137,187,.09);border-color:rgba(15,137,187,.3)}
+html.light .modal-backdrop{background:rgba(15,31,52,.56)}
+html.light .section-head h2,html.light .hero h1,html.light .cta h2{text-shadow:0 8px 30px rgba(45,120,175,.08)}
+html.light .ambient-orb{opacity:.2}
+@media(max-width:760px){
+  html.light .hero:before{background-size:38px 38px;opacity:.75}
+  html.light .skills-universe,html.light .github-pulse{box-shadow:0 12px 32px rgba(39,79,128,.08)}
+}
+@media(prefers-contrast:more){
+  html.light{--line:rgba(18,48,82,.34);--muted:#3f536b}
+  html.light .neural-bg{opacity:.9}
+}
