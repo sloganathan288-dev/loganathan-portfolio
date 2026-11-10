@@ -581,7 +581,8 @@ function App() {
         </div>
       )}
       <NeuralBackground />
-      <CursorFX />\n      <div className="cursor-aura" aria-hidden="true" />
+      <CursorFX />
+      <div className="cursor-aura" aria-hidden="true" />
       <header className="nav-wrap">
         <nav className="nav container">
           <button className="brand" onClick={() => go("home")} aria-label="Go to home">
