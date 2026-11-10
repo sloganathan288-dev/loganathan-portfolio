@@ -341,10 +341,52 @@ function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState<Project | null>(null);
+  const [roleIndex, setRoleIndex] = useState(0);
+  const roles = ["AI & ML Developer", "Full-Stack Developer", "Automation Builder", "Data Science Enthusiast", "Creative Problem Solver"];
 
   useEffect(() => {
     document.documentElement.classList.toggle("light", !dark);
   }, [dark]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setRoleIndex((index) => (index + 1) % roles.length), 2400);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const elements = document.querySelectorAll(".reveal");
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      elements.forEach((element) => element.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -35px 0px" });
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const progress = document.querySelector<HTMLElement>(".scroll-progress span");
+    const updateProgress = () => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+      if (progress) progress.style.width = percent + "%";
+    };
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
+    };
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -402,13 +444,13 @@ function App() {
             <div className="hero-copy">
               <div className="eyebrow"><span className="pulse"></span> Open to internship opportunities</div>
               <p className="hero-kicker">B.Tech AI & Data Science · CGPA 8.50 · Open to Software & AI Internships</p>
-              <h1>Building practical solutions with <span>AI, Data, Web & IoT.</span></h1>
+              <h1 className="hero-title">Building practical solutions with <span key={roleIndex} className="rotating-role">{roles[roleIndex]}.</span></h1>
               <p className="hero-text">
                 I'm Loganathan S, a final-year Artificial Intelligence & Data Science student interested in Software Development, Full-Stack Development, AI/ML, Data Analytics and IoT. I enjoy turning ideas into practical, deployable applications.
               </p>
               <div className="hero-actions">
                 <button className="btn primary" onClick={() => go("projects")}>View Projects <ArrowDown size={17}/></button>
-                <a className="btn secondary" href="/Loganathan_S_Resume.pdf" target="_blank">Download Resume <Download size={17}/></a>
+                <a className="btn secondary" href="/Loganathan_S_Resume.pdf" download="Loganathan_S_Resume.pdf">Download Resume <Download size={17}/></a>
               </div>
               <div className="social-row">
                 <a href={github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a>
@@ -419,12 +461,21 @@ function App() {
 
             <div className="hero-visual">
               <div className="visual-glow"></div>
-              <div className="portrait-frame">
-                <img src={profile} alt="Loganathan S" />
-                <div className="portrait-caption">
-                  <div><span className="live-dot"></span> Building & learning</div>
-                  <span>AI · ML · Web · IoT</span>
+              <div className="portrait-orbit-system">
+                <div className="orbit-square orbit-square-one"></div>
+                <div className="orbit-square orbit-square-two"></div>
+                <div className="orbit-ring orbit-ring-one"></div>
+                <div className="orbit-ring orbit-ring-two"></div>
+                <span className="orbit-node orbit-node-one"></span>
+                <span className="orbit-node orbit-node-two"></span>
+                <span className="orbit-node orbit-node-three"></span>
+                <div className="portrait-frame">
+                  <img src={profile} alt="Loganathan S" />
                 </div>
+                <div className="portrait-status"><span className="live-dot"></span> Building & learning</div>
+                <div className="orbit-label orbit-label-top"><BrainCircuit size={15}/> AI / ML</div>
+                <div className="orbit-label orbit-label-right"><Database size={15}/> DATA</div>
+                <div className="orbit-label orbit-label-bottom"><Cpu size={15}/> IoT</div>
               </div>
               <div className="float-card card-ai"><BrainCircuit size={19}/><span>AI / ML</span></div>
               <div className="float-card card-data"><Database size={19}/><span>Data</span></div>
@@ -436,12 +487,12 @@ function App() {
 
         <section id="about" className="section">
           <div className="container narrow">
-            <div className="section-head">
+            <div className="section-head reveal">
               <p className="section-label">01 · About</p>
               <h2>Curious by nature. <span>Project-driven by choice.</span></h2>
             </div>
             <div className="about-grid">
-              <div className="about-text">
+              <div className="about-text reveal">
                 <p>
                   I am a final-year B.Tech Artificial Intelligence & Data Science student at Mahendra Engineering College with a CGPA of 8.50. I enjoy building practical solutions using Artificial Intelligence, Machine Learning, Data Analytics, Web Development and IoT.
                 </p>
@@ -453,10 +504,10 @@ function App() {
                 </p>
               </div>
               <div className="about-cards">
-                <div className="stat-card"><GraduationCap/><strong>8.50</strong><span>CGPA</span></div>
-                <div className="stat-card"><BrainCircuit/><strong>AI / ML</strong><span>Focus area</span></div>
-                <div className="stat-card"><Code2/><strong>10+</strong><span>Projects & prototypes</span></div>
-                <div className="stat-card"><MapPin/><strong>Salem</strong><span>Tamil Nadu, India</span></div>
+                <div className="stat-card reveal"><GraduationCap/><strong>8.50</strong><span>CGPA</span></div>
+                <div className="stat-card reveal"><BrainCircuit/><strong>AI / ML</strong><span>Focus area</span></div>
+                <div className="stat-card reveal"><Code2/><strong>10+</strong><span>Projects & prototypes</span></div>
+                <div className="stat-card reveal"><MapPin/><strong>Salem</strong><span>Tamil Nadu, India</span></div>
               </div>
             </div>
             <div className="interest-strip">
@@ -473,13 +524,13 @@ function App() {
 
         <section id="skills" className="section section-alt">
           <div className="container">
-            <div className="section-head centered">
+            <div className="section-head centered reveal">
               <p className="section-label">02 · Skills</p>
               <h2>Tools I use to <span>build and learn.</span></h2>
             </div>
             <div className="skills-grid">
               {skills.map(({icon: Icon, title, items}) => (
-                <article className="skill-card" key={title}>
+                <article className="skill-card reveal" key={title}>
                   <div className="skill-icon"><Icon size={20}/></div>
                   <h3>{title}</h3>
                   <div className="tags">{items.map((item) => <span key={item}>{item}</span>)}</div>
@@ -507,7 +558,7 @@ function App() {
 
             <div className="projects-grid">
               {visibleProjects.map((p, i) => (
-                <article className={`project-card ${p.featured ? "featured" : ""}`} key={p.id}>
+                <article className={`project-card reveal ${p.featured ? "featured" : ""}`} key={p.id}>
                   <div className={`project-media ${p.image ? "" : "no-image"}`}>
                     {p.image ? <img src={p.image} alt={`${p.title} screenshot`} /> : <div className="media-placeholder"><Sparkles size={34}/><span>Project preview</span></div>}
                     {p.featured && <span className="featured-badge">Featured</span>}
@@ -537,13 +588,13 @@ function App() {
 
         <section id="experience" className="section section-alt">
           <div className="container narrow">
-            <div className="section-head centered">
+            <div className="section-head centered reveal">
               <p className="section-label">04 · Professional Experience</p>
               <h2>Learning through <span>real-world work.</span></h2>
               <p>Hands-on experience across full-stack development, AI automation and integration.</p>
             </div>
             <div className="experience-grid">
-              <article className="experience-card">
+              <article className="experience-card reveal">
                 <div className="experience-topline"><span className="experience-icon"><BriefcaseBusiness size={20}/></span><span className="experience-mode">On-site · Salem</span></div>
                 <p className="experience-period">24 September – 24 November 2026</p>
                 <h3>Full-Stack Web Developer · AI Automation & Integration</h3>
@@ -551,7 +602,7 @@ function App() {
                 <p>Working on full-stack web development and AI-powered automation integrations in an on-site company environment.</p>
                 <div className="project-tech"><span>React</span><span>Web Development</span><span>AI Automation</span><span>n8n</span><span>API Integration</span></div>
               </article>
-              <article className="experience-card">
+              <article className="experience-card reveal">
                 <div className="experience-topline"><span className="experience-icon"><Code2 size={20}/></span><span className="experience-mode">Remote · Work from home</span></div>
                 <p className="experience-period">September – November 2026</p>
                 <h3>Full-Stack Developer</h3>
@@ -565,12 +616,12 @@ function App() {
 
         <section id="education" className="section section-alt">
           <div className="container narrow">
-            <div className="section-head centered">
+            <div className="section-head centered reveal">
               <p className="section-label">04 · Education</p>
               <h2>My <span>learning journey.</span></h2>
             </div>
             <div className="timeline">
-              <div className="timeline-item current">
+              <div className="timeline-item current reveal">
                 <div className="timeline-marker"><GraduationCap size={18}/></div>
                 <div className="timeline-content">
                   <span className="timeline-date">Current</span>
@@ -579,7 +630,7 @@ function App() {
                   <strong>CGPA: 8.50</strong>
                 </div>
               </div>
-              <div className="timeline-item">
+              <div className="timeline-item reveal">
                 <div className="timeline-marker"><CheckCircle2 size={18}/></div>
                 <div className="timeline-content">
                   <span className="timeline-date">2023</span>
@@ -588,7 +639,7 @@ function App() {
                   <strong>75.8%</strong>
                 </div>
               </div>
-              <div className="timeline-item">
+              <div className="timeline-item reveal">
                 <div className="timeline-marker"><CheckCircle2 size={18}/></div>
                 <div className="timeline-content">
                   <span className="timeline-date">2021</span>
@@ -603,11 +654,11 @@ function App() {
 
         <section id="certifications" className="section">
           <div className="container narrow">
-            <div className="section-head centered">
+            <div className="section-head centered reveal">
               <p className="section-label">05 · Certification</p>
               <h2>Learning beyond the <span>classroom.</span></h2>
             </div>
-            <div className="cert-card">
+            <div className="cert-card reveal">
               <div className="cert-icon"><BriefcaseBusiness size={24}/></div>
               <div>
                 <span className="cert-label">Machine Learning</span>
@@ -621,7 +672,7 @@ function App() {
 
         <section className="cta section">
           <div className="container">
-            <div className="cta-box">
+            <div className="cta-box reveal">
               <div>
                 <p className="section-label">06 · Career</p>
                 <h2>Open to internship <span>opportunities.</span></h2>
@@ -634,15 +685,15 @@ function App() {
 
         <section id="contact" className="section contact">
           <div className="container narrow">
-            <div className="section-head centered">
+            <div className="section-head centered reveal">
               <p className="section-label">07 · Contact</p>
               <h2>Let's <span>connect.</span></h2>
               <p>Have an internship opportunity, project idea or collaboration in mind? Reach out.</p>
             </div>
             <div className="contact-grid">
-              <a className="contact-card" href={email}><Mail/><span><small>Email</small><strong>logan970105@gmail.com</strong></span><ArrowUpRight/></a>
-              <a className="contact-card" href={linkedin} target="_blank" rel="noreferrer"><Linkedin/><span><small>LinkedIn</small><strong>linkedin.com/in/loganathan-data</strong></span><ArrowUpRight/></a>
-              <a className="contact-card" href={github} target="_blank" rel="noreferrer"><Github/><span><small>GitHub</small><strong>github.com/sloganathan288-dev</strong></span><ArrowUpRight/></a>
+              <a className="contact-card reveal" href={email}><Mail/><span><small>Email</small><strong>logan970105@gmail.com</strong></span><ArrowUpRight/></a>
+              <a className="contact-card reveal" href={linkedin} target="_blank" rel="noreferrer"><Linkedin/><span><small>LinkedIn</small><strong>linkedin.com/in/loganathan-data</strong></span><ArrowUpRight/></a>
+              <a className="contact-card reveal" href={github} target="_blank" rel="noreferrer"><Github/><span><small>GitHub</small><strong>github.com/sloganathan288-dev</strong></span><ArrowUpRight/></a>
             </div>
           </div>
         </section>
