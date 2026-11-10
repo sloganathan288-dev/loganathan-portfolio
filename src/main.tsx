@@ -175,6 +175,88 @@ const skills = [
   { icon: Terminal, title: "Tools", items: ["Git", "GitHub", "VS Code", "Prompt Engineering"] }
 ];
 
+function CursorFX() {
+  useEffect(() => {
+    const canvas = document.querySelector<HTMLCanvasElement>(".cursor-fx");
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!finePointer || reducedMotion) return;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    let frame = 0;
+    let lastSpawn = 0;
+    let particles: { x: number; y: number; vx: number; vy: number; life: number; size: number; hue: number }[] = [];
+
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const move = (event: MouseEvent) => {
+      document.documentElement.style.setProperty("--pointer-x", event.clientX + "px");
+      document.documentElement.style.setProperty("--pointer-y", event.clientY + "px");
+      const now = performance.now();
+      if (now - lastSpawn < 18) return;
+      lastSpawn = now;
+      for (let i = 0; i < 2; i++) {
+        particles.push({
+          x: event.clientX + (Math.random() - .5) * 5,
+          y: event.clientY + (Math.random() - .5) * 5,
+          vx: (Math.random() - .5) * 1.2,
+          vy: (Math.random() - .5) * 1.2,
+          life: 1,
+          size: 1.4 + Math.random() * 2.8,
+          hue: 185 + Math.random() * 65
+        });
+      }
+      if (particles.length > 90) particles.splice(0, particles.length - 90);
+    };
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      particles = particles.filter(p => p.life > .025);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= .985;
+        p.vy *= .985;
+        p.life *= .965;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 100%, 72%, ${p.life * .8})`;
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = `hsla(${p.hue}, 100%, 65%, .8)`;
+        ctx.fill();
+      });
+      ctx.shadowBlur = 0;
+      frame = requestAnimationFrame(draw);
+    };
+
+    resize();
+    frame = requestAnimationFrame(draw);
+    window.addEventListener("resize", resize);
+    window.addEventListener("mousemove", move, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", move);
+      document.documentElement.style.removeProperty("--pointer-x");
+      document.documentElement.style.removeProperty("--pointer-y");
+    };
+  }, []);
+
+  return <canvas className="cursor-fx" aria-hidden="true" />;
+}
+
 function App() {
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -208,7 +290,7 @@ function App() {
   };
 
   return (
-    <div className="site">
+    <div className="site">\n      <CursorFX />\n      <div className="cursor-aura" aria-hidden="true" />
       <header className="nav-wrap">
         <nav className="nav container">
           <button className="brand" onClick={() => go("home")} aria-label="Go to home">
