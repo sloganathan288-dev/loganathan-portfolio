@@ -379,12 +379,40 @@ function GitHubPulse() {
 }
 
 function App() {
+  const [introVisible, setIntroVisible] = useState(true);
+  const [introLeaving, setIntroLeaving] = useState(false);
+  const [introProgress, setIntroProgress] = useState(0);
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState<Project | null>(null);
   const [roleIndex, setRoleIndex] = useState(0);
   const roles = ["AI & ML Developer", "Full-Stack Developer", "Automation Builder", "Data Science Enthusiast", "Creative Problem Solver"];
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const duration = reduced ? 450 : 2800;
+    const started = performance.now();
+    let frame = 0;
+    let leaveTimer = 0;
+    const tick = (now: number) => {
+      const progress = Math.min(100, ((now - started) / duration) * 100);
+      setIntroProgress(progress);
+      if (progress < 100) frame = requestAnimationFrame(tick);
+      else {
+        setIntroLeaving(true);
+        leaveTimer = window.setTimeout(() => setIntroVisible(false), reduced ? 50 : 850);
+      }
+    };
+    frame = requestAnimationFrame(tick);
+    return () => { cancelAnimationFrame(frame); window.clearTimeout(leaveTimer); };
+  }, []);
+
+  const skipIntro = () => {
+    setIntroProgress(100);
+    setIntroLeaving(true);
+    window.setTimeout(() => setIntroVisible(false), 650);
+  };
 
   useEffect(() => {
     document.documentElement.classList.toggle("light", !dark);
@@ -528,7 +556,26 @@ function App() {
   };
 
   return (
-    <div className="site">\n      <NeuralBackground />
+    <div className="site">
+      {introVisible && (
+        <div className={`intro-screen ${introLeaving ? "intro-leaving" : ""}`} role="status" aria-label="Welcome to Loganathan's portfolio">
+          <div className="intro-grid" aria-hidden="true" />
+          <div className="intro-orbit intro-orbit-a" aria-hidden="true" />
+          <div className="intro-orbit intro-orbit-b" aria-hidden="true" />
+          <div className="intro-center">
+            <div className="intro-monogram"><span>LS</span><i /></div>
+            <p className="intro-overline">ARTIFICIAL INTELLIGENCE · DATA SCIENCE</p>
+            <h1 className="intro-name" aria-label="Loganathan">{Array.from("LOGANATHAN").map((letter, index) => <span key={index} style={{ animationDelay: (index * 75) + "ms" }}>{letter}</span>)}</h1>
+            <p className="intro-role">ENGINEERING IDEAS INTO INTELLIGENT EXPERIENCES</p>
+            <div className="intro-progress"><span style={{ transform: `scaleX(${introProgress / 100})` }} /></div>
+            <div className="intro-bottom"><span>INITIALIZING PORTFOLIO</span><strong>{Math.round(introProgress).toString().padStart(2,"0")}%</strong></div>
+          </div>
+          <button className="intro-skip" onClick={skipIntro}>SKIP INTRO <span>↗</span></button>
+          <div className="intro-corner intro-corner-left">LS / DIGITAL IDENTITY</div>
+          <div className="intro-corner intro-corner-right">AI · ML · FULL STACK</div>
+        </div>
+      )}
+      <NeuralBackground />
       <CursorFX />\n      <div className="cursor-aura" aria-hidden="true" />
       <header className="nav-wrap">
         <nav className="nav container">
