@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://loganathan-portfolio-ruby.vercel.app/sitemap.xml
