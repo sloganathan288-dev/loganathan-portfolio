@@ -382,7 +382,10 @@ function App() {
   const [introVisible, setIntroVisible] = useState(true);
   const [introLeaving, setIntroLeaving] = useState(false);
   const [introProgress, setIntroProgress] = useState(0);
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(() => {
+    try { return window.localStorage.getItem("loganathan-theme") !== "light"; }
+    catch { return true; }
+  });
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState<Project | null>(null);
@@ -416,6 +419,7 @@ function App() {
 
   useEffect(() => {
     document.documentElement.classList.toggle("light", !dark);
+    try { window.localStorage.setItem("loganathan-theme", dark ? "dark" : "light"); } catch { /* storage may be unavailable */ }
   }, [dark]);
 
   useEffect(() => {
@@ -557,6 +561,7 @@ function App() {
 
   return (
     <div className="site">
+      <a className="skip-link" href="#home">Skip to main content</a>
       {introVisible && (
         <div className={`intro-screen ${introLeaving ? "intro-leaving" : ""}`} role="status" aria-label="Welcome to Loganathan's portfolio">
           <div className="intro-grid" aria-hidden="true" />
@@ -591,12 +596,12 @@ function App() {
           </div>
 
           <div className="nav-actions">
-            <a className="icon-btn" href={github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={18}/></a>
-            <a className="icon-btn" href={linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18}/></a>
-            <button className="icon-btn" onClick={() => setDark((v) => !v)} aria-label="Toggle theme">
+            <a className="icon-btn social-icon" href={github} target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={18}/></a>
+            <a className="icon-btn social-icon" href={linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={18}/></a>
+            <button className="icon-btn theme-toggle" onClick={() => setDark((v) => !v)} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} title={dark ? "Switch to light theme" : "Switch to dark theme"}>
               {dark ? <Sun size={18}/> : <Moon size={18}/>}
             </button>
-            <button className="menu-btn" onClick={() => setMenuOpen((v) => !v)} aria-label="Menu">
+            <button className="menu-btn" onClick={() => setMenuOpen((v) => !v)} aria-label="Menu" aria-expanded={menuOpen}>
               {menuOpen ? <X size={21}/> : <Menu size={21}/>}
             </button>
           </div>
