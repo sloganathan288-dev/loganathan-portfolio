@@ -1,6 +1,30 @@
-# Loganathan S — Personal Portfolio
+# Loganathan S — Portfolio
 
-A React + Vite + TypeScript portfolio for Loganathan S, final-year B.Tech Artificial Intelligence & Data Science student.
+A premium, responsive portfolio for Loganathan S, an AI & Data Science student and full-stack developer. Built with React 19, TypeScript, Vite and Lucide icons.
+
+## Design system
+
+- Three-colour identity: Midnight Navy, Porcelain White and Electric Teal.
+- Light and dark themes with saved visitor preference.
+- Responsive navigation, accessible skip link and visible keyboard focus.
+- Motion effects respect the user's reduced-motion preference.
+
+## Portfolio features
+
+- Animated intro and hero identity.
+- About, skills, interactive skill map and technology stack.
+- Filterable project gallery with detailed project views.
+- Professional experience and education timeline.
+- Certification, career CTA and direct contact links.
+- Interactive terminal and portfolio Q&A assistant.
+- GitHub activity panel.
+- Resume download.
+
+## SEO and sharing
+
+- Search metadata, canonical URL and Person structured data.
+- Open Graph and Twitter summary metadata.
+- SVG favicon, web manifest, robots.txt and XML sitemap.
 
 ## Run locally
 
@@ -9,27 +33,25 @@ npm install
 npm run dev
 ```
 
-Then open the local Vite URL shown in the terminal.
-
-## Build
+## Production build
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Before publishing
+## Automated verification
 
-Replace/add:
-- `src/assets` project screenshots as needed
-- the CodeAlpha certificate verification link
-- any missing GitHub repository/live-demo URLs
-- the actual public GitHub Pages URL for Doodle Alive if it differs from the one currently configured
-- any additional project screenshots you want to feature
+GitHub Actions runs the production Vite build on pushes and pull requests to `main`.
 
-The resume PDF is included in `public/Loganathan_S_Resume.pdf`.
+## Deployment
 
-## Added in v2
-- Internship interests: Software Development, Full-Stack Development, AI/ML, Data Science, Web Development and IoT.
-- Added three real traffic-system images.
-- Traffic project now has a screenshot + hardware gallery in its details view.
+The repository is connected to Vercel for automatic production deployments from `main`.
+
+## Configuration
+
+The portfolio assistant has a built-in local fallback. To enable its server-side AI response, add `OPENAI_API_KEY` to the Vercel project environment variables. Optionally set `OPENAI_MODEL`. Never place API keys in frontend code.
+
+## Content maintenance
+
+Before adding new achievements, certificates, dates or metrics, verify the exact details and links. Do not publish placeholder credentials or unverified claims.
