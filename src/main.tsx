@@ -355,6 +355,8 @@ function App() {
 
   useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motionTargets = document.querySelectorAll(".section:not(.hero)");
+    motionTargets.forEach((element) => element.classList.add("reveal"));
     const elements = document.querySelectorAll(".reveal");
     if (reduceMotion || !("IntersectionObserver" in window)) {
       elements.forEach((element) => element.classList.add("is-visible"));
