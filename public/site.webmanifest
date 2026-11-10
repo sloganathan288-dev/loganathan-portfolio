@@ -1,0 +1,10 @@
+{
+  "name": "Loganathan S — Portfolio",
+  "short_name": "Loganathan",
+  "description": "AI, Data Science and Full-Stack Developer Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1728",
+  "theme_color": "#0b1728",
+  "icons": []
+}
