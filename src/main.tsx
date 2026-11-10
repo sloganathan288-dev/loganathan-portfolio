@@ -336,6 +336,48 @@ function CursorFX() {
   return <canvas className="cursor-fx" aria-hidden="true" />;
 }
 
+
+function NeuralBackground() {
+  useEffect(() => {
+    const canvas = document.querySelector<HTMLCanvasElement>(".neural-bg");
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+    let w=0,h=0,raf=0,points:{x:number;y:number;vx:number;vy:number}[]=[];
+    const resize=()=>{w=window.innerWidth;h=window.innerHeight;const d=Math.min(devicePixelRatio||1,1.5);canvas.width=w*d;canvas.height=h*d;ctx.setTransform(d,0,0,d,0,0);points=Array.from({length:Math.min(76,Math.floor(w/18))},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.24,vy:(Math.random()-.5)*.24}));};
+    const draw=()=>{ctx.clearRect(0,0,w,h);for(let i=0;i<points.length;i++){const p=points[i];p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;for(let j=i+1;j<points.length;j++){const q=points[j],dx=p.x-q.x,dy=p.y-q.y,dist=Math.hypot(dx,dy);if(dist<125){ctx.strokeStyle='rgba(91,205,255,'+(1-dist/125)*.16+')';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}}ctx.fillStyle='rgba(130,190,255,.48)';ctx.beginPath();ctx.arc(p.x,p.y,1.25,0,Math.PI*2);ctx.fill();}raf=requestAnimationFrame(draw);};
+    resize();draw();window.addEventListener("resize",resize);return()=>{cancelAnimationFrame(raf);window.removeEventListener("resize",resize);};
+  },[]);
+  return <canvas className="neural-bg" aria-hidden="true"/>;
+}
+
+function SkillsUniverse() {
+  const nodes=[["AI / ML", "Machine Learning · Deep Learning"],["FULL STACK","React · APIs · Web"],["DATA","Python · SQL · Analytics"],["AUTOMATION","n8n · Supabase"],["IoT","ESP32 · Sensors"],["VISION","YOLO · Computer Vision"]];
+  const [active,setActive]=useState(0);
+  return <div className="skills-universe reveal"><div className="universe-copy"><span className="section-label">INTERACTIVE SKILL MAP</span><h3>Explore my <span>technology universe.</span></h3><p>Select a node to explore the areas I work across.</p><div className="universe-detail"><strong>{nodes[active][0]}</strong><span>{nodes[active][1]}</span></div></div><div className="universe-map"><div className="universe-core"><BrainCircuit size={34}/><span>LOGANATHAN</span></div>{nodes.map((n,i)=><button key={n[0]} className={"universe-node node-"+i+(active===i?" active":"")} onClick={()=>setActive(i)}>{n[0]}</button>)}<svg viewBox="0 0 420 340" aria-hidden="true"><g>{nodes.map((n,i)=><line key={n[0]} x1="210" y1="170" x2={[210,350,325,95,75,210][i]} y2={[28,105,265,265,105,315][i]} />)}</g></svg></div></div>;
+}
+
+function TerminalConsole({go}:{go:(id:string)=>void}) {
+  const [command,setCommand]=useState("");const [history,setHistory]=useState<string[]>(["LOGANATHAN OS [Version 1.0]","Type help to explore this portfolio."]);
+  const run=()=>{const c=command.trim().toLowerCase();if(!c)return;let response="Command not found. Type help.";if(c==="help")response="Available: about, skills, projects, experience, contact, clear";else if(c==="clear"){setHistory([]);setCommand("");return;}else if(["about","skills","projects","experience","contact"].includes(c)){go(c);response="Navigating to "+c+"...";}setHistory(h=>[...h,"> "+command,response]);setCommand("");};
+  return <div className="terminal-window reveal"><div className="terminal-top"><span/><span/><span/><b>loganathan@portfolio:~</b></div><div className="terminal-output">{history.map((h,i)=><p key={i}>{h}</p>)}</div><form onSubmit={e=>{e.preventDefault();run();}}><label>visitor@portfolio:~$</label><input value={command} onChange={e=>setCommand(e.target.value)} placeholder="Type a command..." aria-label="Terminal command"/><button type="submit">Run ↵</button></form></div>;
+}
+
+function PortfolioAssistant() {
+  const [open,setOpen]=useState(false);const [question,setQuestion]=useState("");const [busy,setBusy]=useState(false);
+  const [messages,setMessages]=useState<{role:string;text:string}[]>([{role:"assistant",text:"Hi! I'm Loganathan's portfolio assistant. Ask me about projects, skills, experience or education."}]);
+  const answer=(q:string)=>{const t=q.toLowerCase();if(/skill|tech|stack/.test(t))return "Loganathan works with Python, Java, SQL, JavaScript, React, Flutter, TensorFlow, PyTorch, YOLO, n8n, Supabase, PostgreSQL and IoT technologies.";if(/project|work|built/.test(t))return "Featured work includes an AI chat app, Doodle Alive, AI smart traffic management, healthcare monitoring, Hand Pen, RNN voice prediction, LOGU GAMES, worker salary management and an ongoing AI disaster-monitoring project.";if(/experience|intern/.test(t))return "Loganathan has full-stack development and AI automation experience with Ethiroli Private Limited in Salem and Shanks Code remotely.";if(/education|college|cgpa|study/.test(t))return "He is a final-year B.Tech Artificial Intelligence & Data Science student at Mahendra Engineering College, with a CGPA of 8.50.";if(/contact|email|hire/.test(t))return "You can contact Loganathan at logan970105@gmail.com, or connect through LinkedIn: linkedin.com/in/loganathan-data.";return "I can help with information about Loganathan's skills, projects, experience, education and contact details. Try asking about one of those topics.";};
+  const send=async()=>{const q=question.trim();if(!q||busy)return;setQuestion("");setMessages(m=>[...m,{role:"user",text:q}]);setBusy(true);try{const res=await fetch("/api/assistant",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question:q})});if(res.ok){const data=await res.json();setMessages(m=>[...m,{role:"assistant",text:data.answer||answer(q)}]);}else setMessages(m=>[...m,{role:"assistant",text:answer(q)}]);}catch{setMessages(m=>[...m,{role:"assistant",text:answer(q)}]);}finally{setBusy(false);}};
+  return <div className="assistant-widget"><button className="assistant-launch" onClick={()=>setOpen(v=>!v)} aria-label="Open AI portfolio assistant"><Sparkles size={20}/><span>Ask my AI</span></button>{open&&<div className="assistant-panel"><div className="assistant-head"><div><strong>Portfolio AI</strong><small>Ask about my work</small></div><button onClick={()=>setOpen(false)} aria-label="Close assistant"><X size={18}/></button></div><div className="assistant-messages">{messages.map((m,i)=><p key={i} className={m.role}>{m.text}</p>)}{busy&&<p className="assistant">Thinking...</p>}</div><form onSubmit={e=>{e.preventDefault();send();}}><input value={question} onChange={e=>setQuestion(e.target.value)} placeholder="Ask me anything..." aria-label="Ask portfolio assistant"/><button type="submit" disabled={busy}><Send size={17}/></button></form></div>}</div>;
+}
+
+function GitHubPulse() {
+ const [repos,setRepos]=useState<number|null>(null);const [stars,setStars]=useState<number|null>(null);
+ useEffect(()=>{fetch("https://api.github.com/users/sloganathan288-dev/repos?per_page=100").then(r=>r.ok?r.json():[]).then(data=>{if(Array.isArray(data)){setRepos(data.length);setStars(data.reduce((n:any,r:any)=>n+(r.stargazers_count||0),0));}}).catch(()=>{});},[]);
+ return <div className="github-pulse reveal"><div><span className="section-label">OPEN SOURCE ACTIVITY</span><h3>Building in public.</h3><p>Explore repositories, experiments and code updates.</p><div className="github-stats"><strong>{repos??"—"}<small>Public repositories</small></strong><strong>{stars??"—"}<small>Repository stars</small></strong></div><a className="small-btn outline" href={github} target="_blank" rel="noreferrer"><Github size={15}/> View GitHub profile <ArrowUpRight size={14}/></a></div><div className="contribution-card"><img src="https://ghchart.rshah.org/65d6ff/sloganathan288-dev" alt="GitHub contribution graph" loading="lazy"/><small>Contribution activity · GitHub</small></div></div>;
+}
+
 function App() {
   const [dark, setDark] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -413,7 +455,8 @@ function App() {
   };
 
   return (
-    <div className="site">\n      <CursorFX />\n      <div className="cursor-aura" aria-hidden="true" />
+    <div className="site">\n      <NeuralBackground />
+      <CursorFX />\n      <div className="cursor-aura" aria-hidden="true" />
       <header className="nav-wrap">
         <nav className="nav container">
           <button className="brand" onClick={() => go("home")} aria-label="Go to home">
@@ -422,7 +465,7 @@ function App() {
           </button>
 
           <div className={`nav-links ${menuOpen ? "open" : ""}`}>
-            {["about", "skills", "projects", "experience", "education", "certifications", "contact"].map((id) => (
+            {["about", "skills", "projects", "experience", "education", "certifications", "terminal", "contact"].map((id) => (
               <button key={id} onClick={() => go(id)}>{id[0].toUpperCase() + id.slice(1)}</button>
             ))}
           </div>
@@ -530,6 +573,7 @@ function App() {
               <p className="section-label">02 · Skills</p>
               <h2>Tools I use to <span>build and learn.</span></h2>
             </div>
+            <SkillsUniverse />
             <div className="skills-grid">
               {skills.map(({icon: Icon, title, items}) => (
                 <article className="skill-card reveal" key={title}>
@@ -685,6 +729,9 @@ function App() {
           </div>
         </section>
 
+
+        <section id="terminal" className="section section-alt"><div className="container narrow"><div className="section-head centered reveal"><p className="section-label">DEVELOPER MODE</p><h2>Explore through the <span>terminal.</span></h2><p>Try a few commands to navigate the portfolio.</p></div><TerminalConsole go={go}/></div></section>
+        <section id="github-activity" className="section"><div className="container narrow"><GitHubPulse /></div></section>
         <section id="contact" className="section contact">
           <div className="container narrow">
             <div className="section-head centered reveal">
@@ -708,6 +755,7 @@ function App() {
         </div>
       </footer>
 
+      <PortfolioAssistant />
       {selected && (
         <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && setSelected(null)}>
           <div className="modal">
