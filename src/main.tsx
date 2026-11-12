@@ -446,6 +446,7 @@ function App() {
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [projectSearch, setProjectSearch] = useState("");
   const [selected, setSelected] = useState<Project | null>(null);
   const [roleIndex, setRoleIndex] = useState(0);
   const roles = ["AI & ML Developer", "Full-Stack Developer", "Automation Builder", "Data Science Enthusiast", "Creative Problem Solver"];
@@ -607,10 +608,14 @@ function App() {
   }, []);
 
   const categories = ["All", ...Array.from(new Set(projects.map((project) => project.category)))];
-  const visibleProjects = useMemo(
-    () => filter === "All" ? projects : projects.filter((p) => p.category === filter),
-    [filter]
-  );
+  const visibleProjects = useMemo(() => {
+    const query = projectSearch.trim().toLowerCase();
+    return projects.filter((project) => {
+      const matchesCategory = filter === "All" || project.category === filter;
+      const searchable = [project.title, project.category, project.description, ...project.tech, ...project.details].join(" ").toLowerCase();
+      return matchesCategory && (!query || searchable.includes(query));
+    });
+  }, [filter, projectSearch]);
 
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -793,9 +798,17 @@ function App() {
               <a className="text-link" href={github} target="_blank" rel="noreferrer">View GitHub <ArrowUpRight size={17}/></a>
             </div>
 
-            <div className="filters">
+            <div className="project-tools">
+              <label className="project-search">
+                <span className="sr-only">Search projects by name, technology or description</span>
+                <input type="search" value={projectSearch} onChange={(event) => setProjectSearch(event.target.value)} placeholder="Search projects or technologies…" />
+                <span aria-hidden="true">⌕</span>
+              </label>
+              <p className="project-result-count" aria-live="polite">{visibleProjects.length} of {projects.length} projects</p>
+            </div>
+            <div className="filters" aria-label="Filter projects by category">
               {categories.map((c) => (
-                <button className={filter === c ? "active" : ""} key={c} onClick={() => setFilter(c)}>{c}</button>
+                <button type="button" className={filter === c ? "active" : ""} key={c} aria-pressed={filter === c} onClick={() => setFilter(c)}>{c}</button>
               ))}
             </div>
 
@@ -804,7 +817,7 @@ function App() {
               <div><span>02</span><strong>Build</strong><p>Choose suitable tools and develop the core experience.</p></div>
               <div><span>03</span><strong>Improve</strong><p>Test, refine and prepare the solution for real use.</p></div>
             </div>
-            <div className="projects-grid">
+            {visibleProjects.length ? <div className="projects-grid">
               {visibleProjects.map((p, i) => (
                 <article className={`project-card reveal ${p.featured ? "featured" : ""}`} key={p.id}>
                   <div className={`project-media ${p.image ? "" : "no-image"}`}>
@@ -825,7 +838,7 @@ function App() {
                   </div>
                 </article>
               ))}
-            </div>
+            </div> : <div className="project-empty" role="status"><strong>No matching projects found.</strong><p>Try another keyword or clear the current filters.</p><button type="button" className="small-btn outline" onClick={() => {setProjectSearch("");setFilter("All");}}>Clear search and filters</button></div>}
 
             <div className="github-banner">
               <div><Github size={24}/><div><strong>More projects on GitHub</strong><span>Explore additional work, experiments and practice repositories.</span></div></div>
