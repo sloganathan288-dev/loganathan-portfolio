@@ -381,9 +381,8 @@ function ContactEnquiryForm() {
     event.preventDefault();
     const cleanName=name.trim(),cleanEmail=senderEmail.trim(),cleanMessage=message.trim();
     if(!cleanName||!cleanEmail||!cleanMessage){setNotice("Please complete all fields.");return;}
-    if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(cleanEmail)){setNotice("Please enter a valid email address.");return;}
     const subject=encodeURIComponent("Portfolio enquiry from "+cleanName);
-    const body=encodeURIComponent("Name: "+cleanName+"\\nEmail: "+cleanEmail+"\\n\\n"+cleanMessage);
+    const body=encodeURIComponent(["Name: "+cleanName,"Email: "+cleanEmail,"",cleanMessage].join(String.fromCharCode(10)));
     window.location.href="mailto:logan970105@gmail.com?subject="+subject+"&body="+body;
     setNotice("Your email app should open with the enquiry ready to send. Please press Send there.");
   };
@@ -809,7 +808,7 @@ function App() {
               {visibleProjects.map((p, i) => (
                 <article className={`project-card reveal ${p.featured ? "featured" : ""}`} key={p.id}>
                   <div className={`project-media ${p.image ? "" : "no-image"}`}>
-                    {p.image ? <img src={p.image} alt={`${p.title} screenshot`} /> : <div className="media-placeholder"><Sparkles size={34}/><span>Project preview</span></div>}
+                    {p.image ? <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" decoding="async" /> : <div className="media-placeholder"><Sparkles size={34}/><span>Project preview</span></div>}
                     {p.featured && <span className="featured-badge">Featured</span>}
                     {p.live && <span className="live-badge"><span></span> Live</span>}
                   </div>
@@ -819,7 +818,7 @@ function App() {
                     <p>{p.description}</p>
                     <div className="project-tech">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
                     <div className="project-actions">
-                      <button className="small-btn" onClick={() => setSelected(p)}>Details <ArrowUpRight size={15}/></button>
+                      <button className="small-btn" onClick={() => setSelected(p)} aria-label={`Open ${p.title} case study`}>Case study <ArrowUpRight size={15}/></button>
                       {p.live && <a className="small-btn outline" href={p.live} target="_blank" rel="noreferrer">Live Demo <ExternalLink size={15}/></a>}
                       {p.repo && <a className="small-btn ghost" href={p.repo} target="_blank" rel="noreferrer"><Github size={15}/> GitHub</a>}
                     </div>
@@ -978,14 +977,14 @@ function App() {
       <PortfolioAssistant />
       {selected && (
         <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && setSelected(null)}>
-          <div className="modal">
+          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="project-dialog-title">
             <button className="modal-close" onClick={() => setSelected(null)} aria-label="Close"><X/></button>
             <div className="modal-image">
               {selected.image ? <img src={selected.id === "traffic" ? trafficHardware1 : selected.image === doodle1 ? doodle2 : selected.image} alt="" /> : <div className="media-placeholder"><Sparkles size={38}/></div>}
             </div>
             <div className="modal-content">
               <span className="section-label">{selected.category}</span>
-              <h2>{selected.title}</h2>
+              <h2 id="project-dialog-title">{selected.title}</h2>
               <p>{selected.description}</p>
               <h4>Key features</h4>
               <ul>{selected.details.map(d => <li key={d}><CheckCircle2 size={16}/>{d}</li>)}</ul>
