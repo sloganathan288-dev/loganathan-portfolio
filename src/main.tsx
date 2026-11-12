@@ -623,6 +623,11 @@ function App() {
                 <button className="btn primary" onClick={() => go("projects")}>View Projects <ArrowDown size={17}/></button>
                 <a className="btn secondary" href="/Loganathan_S_Resume.pdf" download="Loganathan_S_Resume.pdf">Download Resume <Download size={17}/></a>
               </div>
+              <div className="hero-proof-row" aria-label="Professional focus">
+                <span><strong>AI + Full-Stack</strong><small>Core focus</small></span>
+                <span><strong>10+ projects</strong><small>Built & explored</small></span>
+                <span><strong>Salem, India</strong><small>Based in</small></span>
+              </div>
               <div className="social-row">
                 <a href={github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a>
                 <a href={linkedin} target="_blank" rel="noreferrer"><Linkedin size={17}/> LinkedIn</a>
@@ -654,6 +659,14 @@ function App() {
             </div>
           </div>
           <div className="scroll-cue"><span></span> Scroll to explore</div>
+        </section>
+
+        <section className="section professional-snapshot" aria-label="Professional profile">
+          <div className="container snapshot-grid">
+            <div><span className="snapshot-label">PROFESSIONAL PROFILE</span><h2>Engineering ideas into <span>useful experiences.</span></h2></div>
+            <p>AI & Data Science background combined with hands-on full-stack development and automation experience. Interested in building reliable applications, connecting APIs and turning practical problems into working software.</p>
+            <a className="snapshot-link" href={email}>Discuss an opportunity <ArrowUpRight size={16}/></a>
+          </div>
         </section>
 
         <section id="about" className="section">
@@ -728,6 +741,11 @@ function App() {
               ))}
             </div>
 
+            <div className="project-approach" aria-label="Project development approach">
+              <div><span>01</span><strong>Understand</strong><p>Define the user need and the problem to solve.</p></div>
+              <div><span>02</span><strong>Build</strong><p>Choose suitable tools and develop the core experience.</p></div>
+              <div><span>03</span><strong>Improve</strong><p>Test, refine and prepare the solution for real use.</p></div>
+            </div>
             <div className="projects-grid">
               {visibleProjects.map((p, i) => (
                 <article className={`project-card reveal ${p.featured ? "featured" : ""}`} key={p.id}>
@@ -772,6 +790,12 @@ function App() {
                 <h3>Full-Stack Web Developer · AI Automation & Integration</h3>
                 <h4>Ethiroli Private Limited</h4>
                 <p>Working on full-stack web development and AI-powered automation integrations in an on-site company environment.</p>
+                <div className="experience-detail-label">Focus areas</div>
+                <ul className="experience-points">
+                  <li>Developing responsive web interfaces and application features with React.</li>
+                  <li>Connecting APIs and supporting end-to-end application workflows.</li>
+                  <li>Exploring AI-powered automation using n8n and related integrations.</li>
+                </ul>
                 <div className="project-tech"><span>React</span><span>Web Development</span><span>AI Automation</span><span>n8n</span><span>API Integration</span></div>
               </article>
               <article className="experience-card reveal">
@@ -780,6 +804,12 @@ function App() {
                 <h3>Full-Stack Developer</h3>
                 <h4>Shanks Code</h4>
                 <p>Contributed to full-stack web development, building frontend experiences and integrating application functionality.</p>
+                <div className="experience-detail-label">Focus areas</div>
+                <ul className="experience-points">
+                  <li>Building and refining frontend experiences for web applications.</li>
+                  <li>Integrating application functionality across the frontend and backend.</li>
+                  <li>Working with modern JavaScript and React-based development workflows.</li>
+                </ul>
                 <div className="project-tech"><span>React</span><span>JavaScript</span><span>Frontend Development</span><span>Full-Stack Development</span></div>
               </article>
             </div>
@@ -864,6 +894,10 @@ function App() {
               <p className="section-label">07 · Contact</p>
               <h2>Let's <span>connect.</span></h2>
               <p>Have an internship opportunity, project idea or collaboration in mind? Reach out.</p>
+            </div>
+            <div className="contact-note reveal">
+              <div><span className="contact-note-label">OPEN TO CONVERSATIONS</span><h3>Have a role, project or idea in mind?</h3><p>I'm happy to discuss suitable opportunities, collaborations and practical software projects.</p></div>
+              <a className="btn primary" href="mailto:logan970105@gmail.com?subject=Portfolio%20enquiry">Start a conversation <ArrowUpRight size={17}/></a>
             </div>
             <div className="contact-grid">
               <a className="contact-card reveal" href={email}><Mail/><span><small>Email</small><strong>logan970105@gmail.com</strong></span><ArrowUpRight/></a>
