@@ -7,17 +7,20 @@ A responsive portfolio presenting Loganathan S's work across AI & Data Science, 
 - Dark and light themes with saved visitor preference.
 - Responsive layouts, accessible skip link, keyboard focus and reduced-motion support.
 - Restrained motion and interaction effects designed to keep the content readable.
+- Lazy-loaded project imagery and accessible project-detail dialogs.
 
 ## Portfolio experience
 - Animated introduction and professional hero profile.
 - About, education, skills and interactive skills universe.
-- Filterable project gallery with detailed project views, technologies and repository/demo links.
+- Filterable project gallery with case-study modals, technologies, screenshots and repository/demo links.
 - Project approach overview: understand, build and improve.
 - Professional experience with role focus areas and technology context.
 - Certification and learning section.
 - Career call-to-action, direct contact links and resume download.
 - Interactive terminal and portfolio Q&A assistant.
-- GitHub activity panel.
+- Live GitHub panel with public repository/star totals and recently updated repositories.
+- Recruiter-friendly professional snapshot, resume access and skills overview.
+- Contact enquiry form that validates details and prepares an email in the visitor's mail app (no third-party form service required).
 
 ## SEO and sharing
 - Search metadata, canonical URL and Person structured data.

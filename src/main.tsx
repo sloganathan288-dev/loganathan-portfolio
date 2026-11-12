@@ -372,10 +372,68 @@ function PortfolioAssistant() {
   return <div className="assistant-widget"><button className="assistant-launch" onClick={()=>setOpen(v=>!v)} aria-label="Open AI portfolio assistant"><Sparkles size={20}/><span>Ask my AI</span></button>{open&&<div className="assistant-panel"><div className="assistant-head"><div><strong>Portfolio AI</strong><small>Ask about my work</small></div><button onClick={()=>setOpen(false)} aria-label="Close assistant"><X size={18}/></button></div><div className="assistant-messages">{messages.map((m,i)=><p key={i} className={m.role}>{m.text}</p>)}{busy&&<p className="assistant">Thinking...</p>}</div><form onSubmit={e=>{e.preventDefault();send();}}><input value={question} onChange={e=>setQuestion(e.target.value)} placeholder="Ask me anything..." aria-label="Ask portfolio assistant"/><button type="submit" disabled={busy}><Send size={17}/></button></form></div>}</div>;
 }
 
+function ContactEnquiryForm() {
+  const [name,setName]=useState("");
+  const [senderEmail,setSenderEmail]=useState("");
+  const [message,setMessage]=useState("");
+  const [notice,setNotice]=useState("");
+  const submit=(event:React.FormEvent<HTMLFormElement>)=>{
+    event.preventDefault();
+    const cleanName=name.trim(),cleanEmail=senderEmail.trim(),cleanMessage=message.trim();
+    if(!cleanName||!cleanEmail||!cleanMessage){setNotice("Please complete all fields.");return;}
+    const subject=encodeURIComponent("Portfolio enquiry from "+cleanName);
+    const body=encodeURIComponent(["Name: "+cleanName,"Email: "+cleanEmail,"",cleanMessage].join(String.fromCharCode(10)));
+    window.location.href="mailto:logan970105@gmail.com?subject="+subject+"&body="+body;
+    setNotice("Your email app should open with the enquiry ready to send. Please press Send there.");
+  };
+  return <form className="contact-form reveal" onSubmit={submit}>
+    <div className="contact-form-heading"><span className="contact-note-label">SEND AN ENQUIRY</span><h3>Tell me what you're working on.</h3><p>This form opens your email app with the message prepared; it does not send anything automatically.</p></div>
+    <div className="contact-form-grid">
+      <label>Your name<input value={name} onChange={e=>setName(e.target.value)} name="name" autoComplete="name" maxLength={80} required placeholder="Your name"/></label>
+      <label>Your email<input value={senderEmail} onChange={e=>setSenderEmail(e.target.value)} name="email" type="email" autoComplete="email" maxLength={120} required placeholder="you@example.com"/></label>
+    </div>
+    <label>Message<textarea value={message} onChange={e=>setMessage(e.target.value)} name="message" maxLength={2000} rows={5} required placeholder="Share a little about the opportunity or idea…"/></label>
+    <div className="contact-form-footer"><button className="btn primary" type="submit">Prepare email <Send size={16}/></button>{notice&&<p role="status">{notice}</p>}</div>
+  </form>;
+}
+
 function GitHubPulse() {
- const [repos,setRepos]=useState<number|null>(null);const [stars,setStars]=useState<number|null>(null);
- useEffect(()=>{fetch("https://api.github.com/users/sloganathan288-dev/repos?per_page=100").then(r=>r.ok?r.json():[]).then(data=>{if(Array.isArray(data)){setRepos(data.length);setStars(data.reduce((n:any,r:any)=>n+(r.stargazers_count||0),0));}}).catch(()=>{});},[]);
- return <div className="github-pulse reveal"><div><span className="section-label">OPEN SOURCE ACTIVITY</span><h3>Building in public.</h3><p>Explore repositories, experiments and code updates.</p><div className="github-stats"><strong>{repos??"—"}<small>Public repositories</small></strong><strong>{stars??"—"}<small>Repository stars</small></strong></div><a className="small-btn outline" href={github} target="_blank" rel="noreferrer"><Github size={15}/> View GitHub profile <ArrowUpRight size={14}/></a></div><div className="contribution-card"><img src="https://ghchart.rshah.org/65d6ff/sloganathan288-dev" alt="GitHub contribution graph" loading="lazy"/><small>Contribution activity · GitHub</small></div></div>;
+  const [repos,setRepos]=useState<number|null>(null);
+  const [stars,setStars]=useState<number|null>(null);
+  const [recent,setRecent]=useState<{name:string;url:string;description:string|null;language:string|null;updated:string}[]>([]);
+  const [loadState,setLoadState]=useState<"loading"|"ready"|"unavailable">("loading");
+  useEffect(()=>{
+    const controller=new AbortController();
+    fetch("https://api.github.com/users/sloganathan288-dev/repos?per_page=100&sort=updated",{signal:controller.signal})
+      .then(r=>{if(!r.ok)throw new Error("GitHub unavailable");return r.json();})
+      .then(data=>{
+        if(!Array.isArray(data))throw new Error("Unexpected GitHub response");
+        setRepos(data.length);
+        setStars(data.reduce((n:number,r:any)=>n+(r.stargazers_count||0),0));
+        setRecent(data.filter((r:any)=>!r.fork).slice(0,3).map((r:any)=>({name:r.name,url:r.html_url,description:r.description,language:r.language,updated:r.pushed_at||r.updated_at})));
+        setLoadState("ready");
+      })
+      .catch(error=>{if(error.name!=="AbortError")setLoadState("unavailable");});
+    return ()=>controller.abort();
+  },[]);
+  return <div className="github-pulse reveal">
+    <div>
+      <span className="section-label">OPEN SOURCE ACTIVITY</span><h3>Building in public.</h3>
+      <p>Live public repository information from GitHub.</p>
+      <div className="github-stats"><strong>{repos??"—"}<small>Public repositories</small></strong><strong>{stars??"—"}<small>Repository stars</small></strong></div>
+      <a className="small-btn outline" href={github} target="_blank" rel="noreferrer"><Github size={15}/> View GitHub profile <ArrowUpRight size={14}/></a>
+      <div className="github-recent">
+        <h4>Recently updated repositories</h4>
+        {loadState==="loading"&&<p className="github-status">Loading public repositories…</p>}
+        {loadState==="unavailable"&&<p className="github-status">Live repository details are temporarily unavailable. Visit GitHub to see the latest work.</p>}
+        {recent.map(repo=><a className="github-repo" href={repo.url} target="_blank" rel="noreferrer" key={repo.url}>
+          <span><strong>{repo.name}</strong><small>{repo.description||"Public project repository"}</small></span>
+          <span className="github-repo-meta">{repo.language||"Code"} <ArrowUpRight size={13}/></span>
+        </a>)}
+      </div>
+    </div>
+    <div className="contribution-card"><img src="https://ghchart.rshah.org/65d6ff/sloganathan288-dev" alt="GitHub contribution graph" loading="lazy"/><small>Contribution activity · GitHub</small></div>
+  </div>;
 }
 
 function App() {
@@ -388,6 +446,7 @@ function App() {
   });
   const [menuOpen, setMenuOpen] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [projectSearch, setProjectSearch] = useState("");
   const [selected, setSelected] = useState<Project | null>(null);
   const [roleIndex, setRoleIndex] = useState(0);
   const roles = ["AI & ML Developer", "Full-Stack Developer", "Automation Builder", "Data Science Enthusiast", "Creative Problem Solver"];
@@ -549,10 +608,14 @@ function App() {
   }, []);
 
   const categories = ["All", ...Array.from(new Set(projects.map((project) => project.category)))];
-  const visibleProjects = useMemo(
-    () => filter === "All" ? projects : projects.filter((p) => p.category === filter),
-    [filter]
-  );
+  const visibleProjects = useMemo(() => {
+    const query = projectSearch.trim().toLowerCase();
+    return projects.filter((project) => {
+      const matchesCategory = filter === "All" || project.category === filter;
+      const searchable = [project.title, project.category, project.description, ...project.tech, ...project.details].join(" ").toLowerCase();
+      return matchesCategory && (!query || searchable.includes(query));
+    });
+  }, [filter, projectSearch]);
 
   const go = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -735,9 +798,17 @@ function App() {
               <a className="text-link" href={github} target="_blank" rel="noreferrer">View GitHub <ArrowUpRight size={17}/></a>
             </div>
 
-            <div className="filters">
+            <div className="project-tools">
+              <label className="project-search">
+                <span className="sr-only">Search projects by name, technology or description</span>
+                <input type="search" value={projectSearch} onChange={(event) => setProjectSearch(event.target.value)} placeholder="Search projects or technologies…" />
+                <span aria-hidden="true">⌕</span>
+              </label>
+              <p className="project-result-count" aria-live="polite">{visibleProjects.length} of {projects.length} projects</p>
+            </div>
+            <div className="filters" aria-label="Filter projects by category">
               {categories.map((c) => (
-                <button className={filter === c ? "active" : ""} key={c} onClick={() => setFilter(c)}>{c}</button>
+                <button type="button" className={filter === c ? "active" : ""} key={c} aria-pressed={filter === c} onClick={() => setFilter(c)}>{c}</button>
               ))}
             </div>
 
@@ -746,11 +817,11 @@ function App() {
               <div><span>02</span><strong>Build</strong><p>Choose suitable tools and develop the core experience.</p></div>
               <div><span>03</span><strong>Improve</strong><p>Test, refine and prepare the solution for real use.</p></div>
             </div>
-            <div className="projects-grid">
+            {visibleProjects.length ? <div className="projects-grid">
               {visibleProjects.map((p, i) => (
                 <article className={`project-card reveal ${p.featured ? "featured" : ""}`} key={p.id}>
                   <div className={`project-media ${p.image ? "" : "no-image"}`}>
-                    {p.image ? <img src={p.image} alt={`${p.title} screenshot`} /> : <div className="media-placeholder"><Sparkles size={34}/><span>Project preview</span></div>}
+                    {p.image ? <img src={p.image} alt={`${p.title} screenshot`} loading="lazy" decoding="async" /> : <div className="media-placeholder"><Sparkles size={34}/><span>Project preview</span></div>}
                     {p.featured && <span className="featured-badge">Featured</span>}
                     {p.live && <span className="live-badge"><span></span> Live</span>}
                   </div>
@@ -760,14 +831,14 @@ function App() {
                     <p>{p.description}</p>
                     <div className="project-tech">{p.tech.map(t => <span key={t}>{t}</span>)}</div>
                     <div className="project-actions">
-                      <button className="small-btn" onClick={() => setSelected(p)}>Details <ArrowUpRight size={15}/></button>
+                      <button className="small-btn" onClick={() => setSelected(p)} aria-label={`Open ${p.title} case study`}>Case study <ArrowUpRight size={15}/></button>
                       {p.live && <a className="small-btn outline" href={p.live} target="_blank" rel="noreferrer">Live Demo <ExternalLink size={15}/></a>}
                       {p.repo && <a className="small-btn ghost" href={p.repo} target="_blank" rel="noreferrer"><Github size={15}/> GitHub</a>}
                     </div>
                   </div>
                 </article>
               ))}
-            </div>
+            </div> : <div className="project-empty" role="status"><strong>No matching projects found.</strong><p>Try another keyword or clear the current filters.</p><button type="button" className="small-btn outline" onClick={() => {setProjectSearch("");setFilter("All");}}>Clear search and filters</button></div>}
 
             <div className="github-banner">
               <div><Github size={24}/><div><strong>More projects on GitHub</strong><span>Explore additional work, experiments and practice repositories.</span></div></div>
@@ -899,6 +970,7 @@ function App() {
               <div><span className="contact-note-label">OPEN TO CONVERSATIONS</span><h3>Have a role, project or idea in mind?</h3><p>I'm happy to discuss suitable opportunities, collaborations and practical software projects.</p></div>
               <a className="btn primary" href="mailto:logan970105@gmail.com?subject=Portfolio%20enquiry">Start a conversation <ArrowUpRight size={17}/></a>
             </div>
+            <ContactEnquiryForm />
             <div className="contact-grid">
               <a className="contact-card reveal" href={email}><Mail/><span><small>Email</small><strong>logan970105@gmail.com</strong></span><ArrowUpRight/></a>
               <a className="contact-card reveal" href={linkedin} target="_blank" rel="noreferrer"><Linkedin/><span><small>LinkedIn</small><strong>linkedin.com/in/loganathan-data</strong></span><ArrowUpRight/></a>
@@ -918,14 +990,14 @@ function App() {
       <PortfolioAssistant />
       {selected && (
         <div className="modal-backdrop" onMouseDown={(e) => e.target === e.currentTarget && setSelected(null)}>
-          <div className="modal">
+          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="project-dialog-title">
             <button className="modal-close" onClick={() => setSelected(null)} aria-label="Close"><X/></button>
             <div className="modal-image">
               {selected.image ? <img src={selected.id === "traffic" ? trafficHardware1 : selected.image === doodle1 ? doodle2 : selected.image} alt="" /> : <div className="media-placeholder"><Sparkles size={38}/></div>}
             </div>
             <div className="modal-content">
               <span className="section-label">{selected.category}</span>
-              <h2>{selected.title}</h2>
+              <h2 id="project-dialog-title">{selected.title}</h2>
               <p>{selected.description}</p>
               <h4>Key features</h4>
               <ul>{selected.details.map(d => <li key={d}><CheckCircle2 size={16}/>{d}</li>)}</ul>
