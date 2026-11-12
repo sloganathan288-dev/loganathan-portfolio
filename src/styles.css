@@ -714,3 +714,19 @@ html.light :focus-visible{outline-color:#007f83}
 .contact-form-footer p{margin:0;color:var(--muted);font-size:11px;line-height:1.6}
 .contact-form .btn{width:max-content}
 @media(max-width:620px){.contact-form-grid{grid-template-columns:1fr}.github-repo{align-items:flex-start}.github-repo-meta{padding-top:2px}}
+
+
+/* Searchable project gallery */
+.project-tools{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:22px 0 12px}
+.project-search{position:relative;display:block;width:min(100%,430px)}
+.project-search input{width:100%;height:44px;padding:0 42px 0 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);font:500 13px Manrope,sans-serif;outline:none;transition:border-color .2s,box-shadow .2s}
+.project-search input::placeholder{color:var(--muted)}
+.project-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,166,166,.12)}
+.project-search>span:last-child{position:absolute;right:14px;top:50%;transform:translateY(-53%);font-size:23px;color:var(--muted);pointer-events:none}
+.project-result-count{margin:0;color:var(--muted);font-size:11px;white-space:nowrap}
+.project-empty{display:grid;justify-items:center;gap:8px;padding:42px 20px;border:1px dashed var(--line);border-radius:18px;text-align:center;background:var(--panel)}
+.project-empty strong{font:700 17px "Space Grotesk",sans-serif}
+.project-empty p{margin:0 0 8px;color:var(--muted);font-size:12px}
+.filters button[aria-pressed="true"]{outline:1px solid var(--accent);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:620px){.project-tools{align-items:stretch;flex-direction:column;gap:9px}.project-search{width:100%}.project-result-count{text-align:right}}
